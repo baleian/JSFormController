@@ -6,9 +6,12 @@
 <script src="js/jquery-3.4.0.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/SIP/common.js"></script>
-<script src="js/SIP/publicCode.js"></script>
-<script src="js/SIP/category.js"></script>
+<script src="js/SIP/sip.js"></script>
+<script src="js/SIP/controller/ListController.js"></script>
+<script src="js/SIP/service/Category.js"></script>
+<!-- <script src="js/SIP/service/PublicCode.js"></script>
+<script src="js/SIP/controller/TabController.js"></script> -->
+
 
 <style>
     #publicCodeList .dropdown-menu {
@@ -24,7 +27,7 @@
 <body>
     <div>
         <div class="row">
-            <div class="col-7" id="publicCodeList" sip-list>
+            <div class="col-7" id="publicCodeList">
                 <div class="row">
                     <div class="col">
                         <h3>Public Code List</h3>
@@ -32,7 +35,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="dropdown" sip-search>
+                        <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                                 Public Code Search
                             </button>
@@ -41,27 +44,27 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-4">
                                             <label>Public Code</label>
-                                            <input sip-query="publicCode" type="text" class="form-control"/>
+                                            <input type="text" class="form-control"/>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Public Name</label>
-                                            <input sip-query="publicName" type="text" class="form-control"/>
+                                            <input type="text" class="form-control"/>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Category Id</label>
-                                            <input sip-query="categoryId" type="text" class="form-control"/>
+                                            <input type="text" class="form-control"/>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary" sip-search-btn>Search</button>
-                                    <button class="btn btn-secondary" sip-clear-btn>Clear</button>
+                                    <button class="btn btn-primary">Search</button>
+                                    <button class="btn btn-secondary">Clear</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div style="width: 300px; float: right;" sip-page sip-search>
-                            <input type="text" class="form-control" style="width:50%; float: left;" sip-page-count readonly/>
-                            <select sip-query="page" class="form-control" style="width:50%;" sip-page-current></select>
+                        <div style="width: 300px; float: right;">
+                            <input type="text" class="form-control" style="width:50%; float: left;" readonly/>
+                            <select class="form-control" style="width:50%;"></select>
                         </div>
                     </div>
                 </div>
@@ -87,7 +90,7 @@
                                 </tr>
                             </thead>
                             <tbody sip-body>
-                                <tr>
+                                <tr sip-body-row>
                                     <td><input sip-query="publicCode" type="text" class="form-control" readonly/></td>
                                     <td><input sip-query="publicName" type="text" class="form-control"/></td>
                                     <td><input sip-query="categoryId" type="text" class="form-control"/></td>
@@ -108,12 +111,43 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                       
+                        <div style="width: 300px; float: right;">
+                            <input type="text" class="form-control" style="width:50%; float: left;" readonly/>
+                            <select class="form-control" style="width:50%;"></select>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Public Code</th>
+                                    <th>Public Name</th>
+                                    <th>Category Id</th>
+                                    <th>Category Name</th>
+                                    <th style="width: 72px;"></th>
+                                    <th style="width: 82px;"></th>
+                                </tr>
+                                <tr>
+                                    <td><input sip-query="publicCode" type="text" class="form-control"/></td>
+                                    <td><input sip-query="publicName" type="text" class="form-control"/></td>
+                                    <td><input sip-query="categoryId" type="text" class="form-control"/></td>
+                                    <td><input sip-query="categoryName" type="text" class="form-control" readonly/></td>
+                                    <td><button class="btn btn-primary" style="width: 100%;">Add</button></td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="form-control" readonly/></td>
+                                    <td><input type="text" class="form-control"/></td>
+                                    <td><input type="text" class="form-control"/></td>
+                                    <td><input type="text" class="form-control" readonly/></td>
+                                    <td><button class="btn btn-secondary" style="width: 100%;">Edit</button></td>
+                                    <td><button class="btn btn-secondary" style="width: 100%;">Delete</button></td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -125,30 +159,47 @@
 
 
 <script type="text/javascript">
-    function initPublicCodeListController() {
-        var controller = new SipListController('#publicCodeList[sip-list]', SIP.PublicCode);
-        
-        controller.on('loaded', (err) => {
-            if (err) alert(err);
-        });
 
-        controller.on('added', (err) => {
-
-        });
-
-        controller.on('edited', (err) => {
-
-        });
-
-        controller.on('deleted', (err) => {
-
-        });
-
-        controller.load();
+    function assert(check, message) {
+        if (!check) throw Error(message || 'error');
+        console.log(check);
     }
 
     $(document).ready(() => {
-        initPublicCodeListController();
-    })
+        var ListController = SIP('Controller.ListController');
+
+        assert(new ListController().load(), 5);
+
+        // assert(ListController !== undefined, 1);
+
+        // var TabController = SIP('Controller.TabController');
+        // assert(TabController !== undefined, 2);
+
+        // var Category = SIP('Service.Category');
+        // assert(Category !== undefined, 3);
+
+        // var PublicCode = SIP('Service.PublicCode');
+        // assert(PublicCode !== undefined, 4);
+
+
+        
+        // assert(new TabController().load(), 6);
+        // assert(Category.getList(), 7);
+        // assert(PublicCode.getList(), 8);
+
+        // var tabController = SIP('Controller.TabController');
+        // assert(tabController !== undefined, 3);
+
+        // console.log(SIP.module2 !== undefined);
+        // console.log(SIP.module3 !== undefined);
+
+        // SIP.module1.test();
+        // SIP.module1.submodule1.test();
+        // SIP.module2.test();
+        // SIP.module3.test();
+
+        // SIP.module1.test();
+        // SIP.module2.test();
+    });
     
 </script>
