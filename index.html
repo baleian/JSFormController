@@ -1,23 +1,34 @@
-<script src="controller/publicCode.js"></script>
-<script src="controller/category.js"></script>
-
 <link rel="stylesheet" href="css/bootstrap.min.css">
 
 <script src="js/jquery-3.4.0.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/SIP/sip.js"></script>
-<script src="js/SIP/controller/ListController.js"></script>
-<script src="js/SIP/service/Category.js"></script>
-<!-- <script src="js/SIP/service/PublicCode.js"></script>
-<script src="js/SIP/controller/TabController.js"></script> -->
 
 
 <style>
     #publicCodeList .dropdown-menu {
         width: 800px;
     }
+
+    [sip-body-row].active {
+        background-color: orange;
+    }
+
+    .page-selector {
+        width: 200px;
+        float: right;
+    }
+
+    .page-selector input {
+        width:50%;
+        float: left;
+    }
+
+    .page-selector select {
+        width:50%;
+    }
 </style>
+
 
 <!DOCTYPE html>
 <html>
@@ -40,31 +51,31 @@
                                 Public Code Search
                             </button>
                             <div class="dropdown-menu">
-                                <form>
+                                <div sip-search>
                                     <div class="form-row">
                                         <div class="form-group col-md-4">
                                             <label>Public Code</label>
-                                            <input type="text" class="form-control"/>
+                                            <input type="text" class="form-control" sip-query="publicCode"/>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Public Name</label>
-                                            <input type="text" class="form-control"/>
+                                            <input type="text" class="form-control" sip-query="publicName"/>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Category Id</label>
-                                            <input type="text" class="form-control"/>
+                                            <input type="text" class="form-control" sip-query="categoryId"/>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary">Search</button>
-                                    <button class="btn btn-secondary">Clear</button>
-                                </form>
+                                    <button class="btn btn-primary" sip-search-btn="search">Search</button>
+                                    <button class="btn btn-secondary" name="btnClear">Clear</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div style="width: 300px; float: right;">
-                            <input type="text" class="form-control" style="width:50%; float: left;" readonly/>
-                            <select class="form-control" style="width:50%;"></select>
+                        <div class="page-selector">
+                            <input type="text" class="form-control" sip-query="pageCount" readonly/>
+                            <select class="form-control" sip-query="page"></select>
                         </div>
                     </div>
                 </div>
@@ -81,22 +92,22 @@
                                     <th style="width: 82px;"></th>
                                 </tr>
                                 <tr sip-add>
-                                    <td><input sip-query="publicCode" type="text" class="form-control"/></td>
-                                    <td><input sip-query="publicName" type="text" class="form-control"/></td>
-                                    <td><input sip-query="categoryId" type="text" class="form-control"/></td>
-                                    <td><input sip-query="categoryName" type="text" class="form-control" readonly/></td>
-                                    <td><button class="btn btn-primary" style="width: 100%;" sip-add-btn>Add</button></td>
+                                    <td><input type="text" class="form-control" sip-query="publicCode"/></td>
+                                    <td><input type="text" class="form-control" sip-query="publicName"/></td>
+                                    <td><input type="text" class="form-control" sip-query="categoryId"/></td>
+                                    <td><input type="text" class="form-control" sip-query="categoryName" readonly/></td>
+                                    <td><button class="btn btn-primary" sip-add-btn style="width: 100%;">Add</button></td>
                                     <td></td>
                                 </tr>
                             </thead>
                             <tbody sip-body>
-                                <tr sip-body-row>
-                                    <td><input sip-query="publicCode" type="text" class="form-control" readonly/></td>
-                                    <td><input sip-query="publicName" type="text" class="form-control"/></td>
-                                    <td><input sip-query="categoryId" type="text" class="form-control"/></td>
-                                    <td><input sip-query="categoryName" type="text" class="form-control" readonly/></td>
-                                    <td><button class="btn btn-secondary" style="width: 100%;" sip-edit-btn>Edit</button></td>
-                                    <td><button class="btn btn-secondary" style="width: 100%;" sip-delete-btn>Delete</button></td>
+                                <tr sip-body-row sip-edit sip-delete>
+                                    <td><input type="text" class="form-control" sip-query="publicCode" readonly/></td>
+                                    <td><input type="text" class="form-control" sip-query="publicName"/></td>
+                                    <td><input type="text" class="form-control" sip-query="categoryId"/></td>
+                                    <td><input type="text" class="form-control" sip-query="categoryName" readonly/></td>
+                                    <td><button class="btn btn-dark" sip-edit-btn style="width: 100%;">Edit</button></td>
+                                    <td><button class="btn btn-dark" sip-delete-btn style="width: 100%;">Delete</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -111,9 +122,9 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div style="width: 300px; float: right;">
-                            <input type="text" class="form-control" style="width:50%; float: left;" readonly/>
-                            <select class="form-control" style="width:50%;"></select>
+                        <div class="page-selector">
+                            <input type="text" class="form-control" sip-query="pageCount" readonly/>
+                            <select class="form-control" sip-query="page"></select>
                         </div>
                     </div>
                 </div>
@@ -122,30 +133,30 @@
                         <table class="table table-sm">
                             <thead>
                                 <tr>
-                                    <th>Public Code</th>
-                                    <th>Public Name</th>
                                     <th>Category Id</th>
-                                    <th>Category Name</th>
-                                    <th style="width: 72px;"></th>
+                                    <th>Code1</th>
+                                    <th>Name1</th>
+                                    <th>Code2</th>
+                                    <th>Name2</th>
                                     <th style="width: 82px;"></th>
                                 </tr>
-                                <tr>
-                                    <td><input sip-query="publicCode" type="text" class="form-control"/></td>
-                                    <td><input sip-query="publicName" type="text" class="form-control"/></td>
-                                    <td><input sip-query="categoryId" type="text" class="form-control"/></td>
-                                    <td><input sip-query="categoryName" type="text" class="form-control" readonly/></td>
-                                    <td><button class="btn btn-primary" style="width: 100%;">Add</button></td>
-                                    <td></td>
+                                <tr sip-search>
+                                    <td><input type="text" class="form-control" sip-query="categoryId"/></td>
+                                    <td><input type="text" class="form-control" sip-query="code1"/></td>
+                                    <td><input type="text" class="form-control" sip-query="name1"/></td>
+                                    <td><input type="text" class="form-control" sip-query="code2"/></td>
+                                    <td><input type="text" class="form-control" sip-query="name2"/></td>
+                                    <td><button class="btn btn-secondary" sip-search-btn style="width: 100%;">Search</button></td>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" class="form-control" readonly/></td>
-                                    <td><input type="text" class="form-control"/></td>
-                                    <td><input type="text" class="form-control"/></td>
-                                    <td><input type="text" class="form-control" readonly/></td>
-                                    <td><button class="btn btn-secondary" style="width: 100%;">Edit</button></td>
-                                    <td><button class="btn btn-secondary" style="width: 100%;">Delete</button></td>
+                            <tbody sip-body>
+                                <tr sip-body-row>
+                                    <td sip-query="categoryId"></td>
+                                    <td sip-query="code1"></td>
+                                    <td sip-query="name1"></td>
+                                    <td sip-query="code2"></td>
+                                    <td sip-query="name2"></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -158,48 +169,124 @@
 </html>
 
 
-<script type="text/javascript">
-
-    function assert(check, message) {
-        if (!check) throw Error(message || 'error');
-        console.log(check);
-    }
-
+<script>
     $(document).ready(() => {
-        var ListController = SIP('Controller.ListController');
+        $('.dropdown-menu').on('click', (event) => {
+            event.stopPropagation();
+        });
 
-        assert(new ListController().load(), 5);
+        $('.dropdown-menu').on('keydown', (event) => {
+            if (event.keyCode !== 13) return;
+            $('.dropdown-menu').removeClass('show');
+        });
 
-        // assert(ListController !== undefined, 1);
-
-        // var TabController = SIP('Controller.TabController');
-        // assert(TabController !== undefined, 2);
-
-        // var Category = SIP('Service.Category');
-        // assert(Category !== undefined, 3);
-
-        // var PublicCode = SIP('Service.PublicCode');
-        // assert(PublicCode !== undefined, 4);
-
-
-        
-        // assert(new TabController().load(), 6);
-        // assert(Category.getList(), 7);
-        // assert(PublicCode.getList(), 8);
-
-        // var tabController = SIP('Controller.TabController');
-        // assert(tabController !== undefined, 3);
-
-        // console.log(SIP.module2 !== undefined);
-        // console.log(SIP.module3 !== undefined);
-
-        // SIP.module1.test();
-        // SIP.module1.submodule1.test();
-        // SIP.module2.test();
-        // SIP.module3.test();
-
-        // SIP.module1.test();
-        // SIP.module2.test();
+        $('.dropdown-menu button').on('click', (event) => {
+            $('.dropdown-menu').removeClass('show');
+        });
     });
-    
+
+    function bindService(controller, pageNavigator, service) {
+
+        function reload(query) {
+            query = $.extend(controller.getSearchQuery(), query);
+            query = $.extend(query, { 
+                'page': pageNavigator.page,
+                'limit': pageNavigator.limit 
+            });
+            controller.clear();
+            service.getList(query, (err, datas) => {
+                if (err) return alert(err);
+                controller.load(datas);
+            });
+        }
+
+        function setCount(query) {
+            query = $.extend(controller.getSearchQuery(), query);
+            service.getCount(query, (err, count) => {
+                if (err) return alert(err);
+                pageNavigator.count = count;
+            });
+            pageNavigator.page = 1;
+        }
+
+        $(controller.selector).find('.page-selector select').on('change', (event) => {
+            pageNavigator.page = $(event.currentTarget).val();
+        });
+
+        pageNavigator.on('pageCount:change', (pageCount) => {
+            var pageSelect = $(controller.selector).find('.page-selector select');
+            pageSelect.html('');
+            if (pageCount > 0) {
+                for (var i = 1; i <= pageCount; i++) {
+                    pageSelect.append('<option value="' + i + '">' + i + '</option>');
+                }
+                pageSelect.val(1);
+            }
+        })
+
+        pageNavigator.on('page:change', (page) => {
+            reload();
+        });
+
+        $(controller.selector).find('[sip-search] [name=btnClear]').on('click', (event) => {
+            controller.clearSearchQuery();
+            setCount();
+        });
+
+        controller.on('search', (query) => {
+            setCount();
+        });
+
+        controller.on('add', (query) => {
+            service.add(query, (err, res) => {
+                if (err) {
+                    alert(err);
+                    reload();
+                    return;
+                }
+                alert(res);
+                controller.clearAddQuery();
+                setCount();
+            });
+        });
+
+        controller.on('edit', (query) => {
+            service.edit(query, (err, res) => {
+                if (err) {
+                    alert(err);
+                    reload();
+                    return;
+                }
+                alert(res);
+                setCount();
+            });
+        });
+
+        controller.on('delete', (query) => {
+            service.remove(query, (err, res) => {
+                if (err) {
+                    alert(err);
+                    reload();
+                    return;
+                }
+                alert(res);
+                setCount();
+            });
+        });
+
+        setCount();
+    }
+</script>
+
+
+<script type="module">
+    import * as SIP from './js/SIP/index.js';
+
+    var publicCodeList = new SIP.Form.ListController('#publicCodeList');
+    var publicCodePageNavigator = new SIP.Form.PageNavigator('#publicCodeList .page-selector', 20);
+    var categoryList = new SIP.Form.ListController('#categoryList');
+    var categoryPageNavigator = new SIP.Form.PageNavigator('#categoryList .page-selector', 20);
+
+    bindService(publicCodeList, publicCodePageNavigator, SIP.Service.PublicCode);
+    bindService(categoryList, categoryPageNavigator, SIP.Service.Category);
 </script>
